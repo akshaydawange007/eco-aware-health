@@ -14,7 +14,141 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      health_history: {
+        Row: {
+          aqi: number | null
+          created_at: string
+          date: string
+          humidity: number | null
+          id: string
+          risk_level: string
+          temperature: number | null
+          user_id: string
+        }
+        Insert: {
+          aqi?: number | null
+          created_at?: string
+          date?: string
+          humidity?: number | null
+          id?: string
+          risk_level: string
+          temperature?: number | null
+          user_id: string
+        }
+        Update: {
+          aqi?: number | null
+          created_at?: string
+          date?: string
+          humidity?: number | null
+          id?: string
+          risk_level?: string
+          temperature?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          dob: string
+          gender: string
+          id: string
+          name: string
+          profile_photo_url: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          dob: string
+          gender: string
+          id?: string
+          name: string
+          profile_photo_url?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          dob?: string
+          gender?: string
+          id?: string
+          name?: string
+          profile_photo_url?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_feedback: {
+        Row: {
+          created_at: string
+          feedback_text: string
+          id: string
+          symptoms_experienced: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          feedback_text: string
+          id?: string
+          symptoms_experienced?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          feedback_text?: string
+          id?: string
+          symptoms_experienced?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_health_data: {
+        Row: {
+          activity_level: string
+          created_at: string
+          exercise: string
+          has_allergy: boolean
+          has_asthma: boolean
+          has_heart_disease: boolean
+          has_none: boolean
+          id: string
+          sleep_hours: number
+          smoking: boolean
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          activity_level: string
+          created_at?: string
+          exercise: string
+          has_allergy?: boolean
+          has_asthma?: boolean
+          has_heart_disease?: boolean
+          has_none?: boolean
+          id?: string
+          sleep_hours: number
+          smoking?: boolean
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          activity_level?: string
+          created_at?: string
+          exercise?: string
+          has_allergy?: boolean
+          has_asthma?: boolean
+          has_heart_disease?: boolean
+          has_none?: boolean
+          id?: string
+          sleep_hours?: number
+          smoking?: boolean
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
