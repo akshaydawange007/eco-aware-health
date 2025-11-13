@@ -8,8 +8,8 @@ const Navigation = () => {
   const location = useLocation();
 
   const navigation = [
+    { name: "Home", href: "/", icon: Heart },
     { name: "Dashboard", href: "/dashboard", icon: Shield },
-    { name: "Alerts", href: "/alerts", icon: CloudRain },
     { name: "About", href: "/about", icon: Heart },
   ];
 
@@ -47,10 +47,12 @@ const Navigation = () => {
                 </Link>
               );
             })}
-            <Button size="sm" className="ml-4">
-              <User className="w-4 h-4 mr-2" />
-              Login
-            </Button>
+            <Link to="/auth">
+              <Button size="sm" className="ml-4">
+                <User className="w-4 h-4 mr-2" />
+                Login
+              </Button>
+            </Link>
           </div>
 
           {/* Mobile menu button */}
@@ -89,10 +91,12 @@ const Navigation = () => {
                 );
               })}
               <div className="pt-2">
-                <Button size="sm" className="w-full">
-                  <User className="w-4 h-4 mr-2" />
-                  Login
-                </Button>
+                <Link to="/auth" className="block">
+                  <Button size="sm" className="w-full">
+                    <User className="w-4 h-4 mr-2" />
+                    Login
+                  </Button>
+                </Link>
               </div>
             </div>
           </div>
