@@ -1,12 +1,45 @@
-import { Heart, CloudRain, Shield, User, Menu, X } from "lucide-react";
-import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Heart, CloudRain, Shield, User, Menu, X, LogOut } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/clihealth-logo.jpg";
+import { supabase } from "@/integrations/supabase/client";
+import { User as SupabaseUser } from "@supabase/supabase-js";
+import { useToast } from "@/hooks/use-toast";
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [user, setUser] = useState<SupabaseUser | null>(null);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  useEffect(() => {
+    // Check current session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      toast({
+        title: "Error",
+        description: "Failed to log out",
+        variant: "destructive",
+      });
+    } else {
+      navigate("/");
+    }
+  };
 
   const navigation = [
     { name: "Home", href: "/", icon: Heart },
@@ -49,12 +82,19 @@ const Navigation = () => {
                 </Link>
               );
             })}
-            <Link to="/auth">
-              <Button size="sm" className="ml-4">
-                <User className="w-4 h-4 mr-2" />
-                Login
+            {user ? (
+              <Button size="sm" className="ml-4" onClick={handleLogout} variant="outline">
+                <LogOut className="w-4 h-4 mr-2" />
+                Logout
               </Button>
-            </Link>
+            ) : (
+              <Link to="/auth">
+                <Button size="sm" className="ml-4">
+                  <User className="w-4 h-4 mr-2" />
+                  Login
+                </Button>
+              </Link>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -93,12 +133,19 @@ const Navigation = () => {
                 );
               })}
               <div className="pt-2">
-                <Link to="/auth" className="block">
-                  <Button size="sm" className="w-full">
-                    <User className="w-4 h-4 mr-2" />
-                    Login
+                {user ? (
+                  <Button size="sm" className="w-full" onClick={handleLogout} variant="outline">
+                    <LogOut className="w-4 h-4 mr-2" />
+                    Logout
                   </Button>
-                </Link>
+                ) : (
+                  <Link to="/auth" className="block">
+                    <Button size="sm" className="w-full">
+                      <User className="w-4 h-4 mr-2" />
+                      Login
+                    </Button>
+                  </Link>
+                )}
               </div>
             </div>
           </div>
