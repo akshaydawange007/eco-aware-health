@@ -8,7 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import Navigation from "@/components/Navigation";
 import SimpleHealthRiskCard from "@/components/SimpleHealthRiskCard";
-import heroImage from "@/assets/hero-image.jpg";
+import heroImage from "@/assets/climate-health-hero.jpg";
 
 const Landing = () => {
   const navigate = useNavigate();
