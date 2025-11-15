@@ -9,6 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import Navigation from "@/components/Navigation";
 import SimpleHealthRiskCard from "@/components/SimpleHealthRiskCard";
 import heroImage from "@/assets/climate-health-hero.jpg";
+import { feedbackSchema } from "@/lib/validationSchemas";
 
 const Landing = () => {
   const navigate = useNavigate();
@@ -37,6 +38,18 @@ const Landing = () => {
       toast({
         title: "Please login",
         description: "You need to be logged in to submit feedback",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Validate input
+    const validation = feedbackSchema.safeParse({ feedback_text: feedback });
+    if (!validation.success) {
+      const firstError = validation.error.errors[0];
+      toast({
+        title: "Validation Error",
+        description: firstError.message,
         variant: "destructive",
       });
       return;

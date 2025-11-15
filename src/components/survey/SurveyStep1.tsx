@@ -4,6 +4,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { SurveyData } from "@/pages/Survey";
+import { surveyStep1Schema } from "@/lib/validationSchemas";
+import { useToast } from "@/hooks/use-toast";
 
 interface SurveyStep1Props {
   data: SurveyData;
@@ -12,8 +14,29 @@ interface SurveyStep1Props {
 }
 
 const SurveyStep1 = ({ data, onChange, onNext }: SurveyStep1Props) => {
+  const { toast } = useToast();
+  
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validate input
+    const validation = surveyStep1Schema.safeParse({
+      name: data.name,
+      dob: data.dob,
+      gender: data.gender,
+      profilePhoto: data.profilePhoto,
+    });
+    
+    if (!validation.success) {
+      const firstError = validation.error.errors[0];
+      toast({
+        title: "Validation Error",
+        description: firstError.message,
+        variant: "destructive",
+      });
+      return;
+    }
+    
     onNext();
   };
 
